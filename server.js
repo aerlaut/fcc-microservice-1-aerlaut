@@ -26,21 +26,25 @@ var listener = app.listen(process.env.PORT, function () {
 
 // Timestamp API Service
 app.get('/api/timestamp/:date_string?', function(req, res) {
-    
-  let unix;
-  let utc;
+
   let date;
   
-  if(req.params.date_string) { // if undefined
+  if(req.params.date_string) { 
     
-    // Test if date_string is valid
-    date = new Date(req.params.date_string);    
-    if(date == 'Invalid Date') { date = new Date(); }
+    date = new Date(req.params.date_string);
     
-  } else {
+    // Test if date_string is valid   
+    if(date == 'Invalid Date') { 
+      res.json({"unix": null, "utc" : "Invalid Date" });
+    } else {
+      res.json({unix : date.getTime(), utc: date.toUTCString() })
+    }
+    
+  } else { // if undefined
+    
     date = new Date();
+    res.json({unix : date.getTime(), utc: date.toUTCString() });
+    
   }
-  
-  res.json({unix : date.getTime(), utc: date.toUTCString() })
   
 });
