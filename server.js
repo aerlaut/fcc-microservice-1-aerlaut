@@ -31,7 +31,9 @@ app.get('/api/timestamp/:date_string?', function(req, res) {
   
   if(req.params.date_string) { 
     
-    date = new Date(req.params.date_string);
+    let date_string = /\d{13}/.test(req.params.date_string) ? parseInt(req.params.date_string) : req.params.date_string;
+    
+    date = new Date(date_string);
     
     // Test if date_string is valid   
     if(date == 'Invalid Date') { 
